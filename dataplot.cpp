@@ -8,7 +8,6 @@ DataPlot::DataPlot(QWidget *parent) :
     m_gyrPlot = new QCustomPlot(this);
     m_magPlot = new QCustomPlot(this);
 
-
     m_timer = new QTimer(this);
     m_timer->setInterval(20);
     m_tickCounter = 0;
@@ -78,7 +77,7 @@ QWidget *DataPlot::createAccPlot()
 QWidget *DataPlot::createGyrPlot()
 {
     // setup plot
-    m_gyrPlot->yAxis->setRange(-1000,1000);
+    m_gyrPlot->yAxis->setRange(-2000,2000);
     m_gyrPlot->xAxis->setTickStep(2);
 
     // set some pens, brushes and backgrounds:
@@ -217,24 +216,11 @@ void DataPlot::updateSensorData(const QVector3D &accData, const QVector3D &gyrDa
 
     // save timestamp
     m_timestamps.append(m_tickCounter);
-    if(m_timestamps.count() > dataLength){
-        m_timestamps.remove(m_timestamps.first());
-    }
 
     // acc
     m_acc_x_Values.append(accData.x());
     m_acc_y_Values.append(accData.y());
     m_acc_z_Values.append(accData.z());
-
-    if(m_acc_x_Values.count() > dataLength){
-        m_acc_x_Values.remove(m_acc_x_Values.first());
-    }
-    if(m_acc_y_Values.count() > dataLength){
-        m_acc_y_Values.remove(m_acc_y_Values.first());
-    }
-    if(m_acc_z_Values.count() > dataLength){
-        m_acc_z_Values.remove(m_acc_z_Values.first());
-    }
 
     m_accPlot->graph(0)->setData(m_timestamps,m_acc_x_Values);
     m_accPlot->graph(1)->setData(m_timestamps,m_acc_y_Values);
@@ -244,17 +230,6 @@ void DataPlot::updateSensorData(const QVector3D &accData, const QVector3D &gyrDa
     m_gyr_x_Values.append(gyrData.x());
     m_gyr_y_Values.append(gyrData.y());
     m_gyr_z_Values.append(gyrData.z());
-
-    if(m_gyr_x_Values.count() > dataLength){
-        m_gyr_x_Values.remove(m_gyr_x_Values.first());
-    }
-    if(m_gyr_y_Values.count() > dataLength){
-        m_gyr_y_Values.remove(m_gyr_y_Values.first());
-    }
-    //there is some error in z-data i canot find
-    if(m_gyr_z_Values.count() > dataLength){
-        m_gyr_z_Values.remove(m_gyr_z_Values.first());
-    }
 
     //qDebug() << m_gyr_z_Values.last() << m_gyr_z_Values.count();
 
@@ -267,18 +242,46 @@ void DataPlot::updateSensorData(const QVector3D &accData, const QVector3D &gyrDa
     m_mag_y_Values.append(magData.y());
     m_mag_z_Values.append(magData.z());
 
-    if(m_mag_x_Values.count() > dataLength){
-        m_mag_x_Values.remove(m_mag_x_Values.first());
-    }
-    if(m_mag_y_Values.count() > dataLength){
-        m_mag_y_Values.remove(m_mag_y_Values.first());
-    }
-    if(m_mag_z_Values.count() > dataLength){
-        m_mag_z_Values.remove(m_mag_z_Values.first());
-    }
-
     m_magPlot->graph(0)->setData(m_timestamps,m_mag_x_Values);
     m_magPlot->graph(1)->setData(m_timestamps,m_mag_y_Values);
     m_magPlot->graph(2)->setData(m_timestamps,m_mag_z_Values);
+
+
+    // change vector leght
+    if(m_timestamps.count() > dataLength){
+        m_timestamps.remove(0);
+    }
+
+    if(m_acc_x_Values.count() > dataLength){
+        m_acc_x_Values.remove(0);
+    }
+    if(m_acc_y_Values.count() > dataLength){
+        m_acc_y_Values.remove(0);
+    }
+    if(m_acc_z_Values.count() > dataLength){
+        m_acc_z_Values.remove(0);
+    }
+
+
+    if(m_gyr_x_Values.count() > dataLength){
+        m_gyr_x_Values.remove(0);
+    }
+    if(m_gyr_y_Values.count() > dataLength){
+        m_gyr_y_Values.remove(0);
+    }
+    if(m_gyr_z_Values.count() > dataLength){
+        m_gyr_z_Values.remove(0);
+    }
+
+
+    if(m_mag_x_Values.count() > dataLength){
+        m_mag_x_Values.remove(0);
+    }
+    if(m_mag_y_Values.count() > dataLength){
+        m_mag_y_Values.remove(0);
+    }
+    if(m_mag_z_Values.count() > dataLength){
+        m_mag_z_Values.remove(0);
+    }
 
 }
