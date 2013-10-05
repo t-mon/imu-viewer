@@ -183,10 +183,11 @@ QGroupBox *MainWindow::createVisualizazionGroupbox()
     QVBoxLayout *layout = new QVBoxLayout(this);
     m_dataPlot = new DataPlot(groupBox);
 
-    tabWidget->addTab(m_visualization,"3D");
-    tabWidget->addTab(m_dataPlot->createAccPlot(),"Acc");
-    tabWidget->addTab(m_dataPlot->createGyrPlot(),"Gyr");
-    tabWidget->addTab(m_dataPlot->createMagPlot(),"Mag");
+    tabWidget->addTab(m_visualization,"  3D  ");
+    tabWidget->addTab(m_dataPlot->createAnglePlot(),"Angles");
+    tabWidget->addTab(m_dataPlot->createAccPlot()," Acc  ");
+    tabWidget->addTab(m_dataPlot->createGyrPlot()," Gyr  ");
+    tabWidget->addTab(m_dataPlot->createMagPlot()," Mag  ");
 
     layout->setSizeConstraint(QLayout::SetNoConstraint);
 
@@ -236,4 +237,6 @@ void MainWindow::updateAngleData(const float &roll, const float &pitch, const fl
     yawLabel->setText(QString::number(yaw));
 
     m_visualization->updateAngles(roll+180,pitch+180,yaw+180);
+    m_dataPlot->updateAngleData(QVector3D(roll,pitch,yaw));
+
 }

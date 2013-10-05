@@ -39,7 +39,7 @@ void Visualization::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    glTranslatef(0.0,0.0,-5);
+    glTranslatef(0.0,0.0,-3);
     glRotatef(xRot, 1.0, 0.0, 0.0);
     glRotatef(yRot, 0.0, 1.0, 0.0);
     glRotatef(zRot, 0.0, 0.0, 1.0);
@@ -68,50 +68,61 @@ void Visualization::wheelEvent(QWheelEvent *event)
 
 void Visualization::drawObject()
 {
+
+    glRotatef(90,1,0,0);
     glBegin(GL_POLYGON);
     glColor3f(   1.0,  1.0, 1.0 );
-    glVertex3f(  0.5, -0.5, 0.5 );
-    glVertex3f(  0.5,  0.5, 0.5 );
-    glVertex3f( -0.5,  0.5, 0.5 );
-    glVertex3f( -0.5, -0.5, 0.5 );
+    glVertex3f(-0.5f, -0.25f,  0.1f);
+    glVertex3f( 0.5f, -0.25f,  0.1f);
+    glVertex3f( 0.5f,  0.25f,  0.1f);
+    glVertex3f(-0.5f,  0.25f,  0.1f);
+
     glEnd();
 
     // Purple side - RIGHT
     glBegin(GL_POLYGON);
     glColor3f(  1.0,  0.0,  1.0 );
-    glVertex3f( 0.5, -0.5, -0.5 );
-    glVertex3f( 0.5,  0.5, -0.5 );
-    glVertex3f( 0.5,  0.5,  0.5 );
-    glVertex3f( 0.5, -0.5,  0.5 );
+    glVertex3f( 0.5f, -0.25f, -0.1f);
+    glVertex3f(-0.5f, -0.25f, -0.1f);
+    glVertex3f(-0.5f,  0.25f, -0.1f);
+    glVertex3f( 0.5f,  0.25f, -0.1f);
     glEnd();
 
     // Green side - LEFT
     glBegin(GL_POLYGON);
     glColor3f(   0.0,  1.0,  0.0 );
-    glVertex3f( -0.5, -0.5,  0.5 );
-    glVertex3f( -0.5,  0.5,  0.5 );
-    glVertex3f( -0.5,  0.5, -0.5 );
-    glVertex3f( -0.5, -0.5, -0.5 );
+    glVertex3f( 0.5f, -0.25f,  0.1f);
+    glVertex3f( 0.5f, -0.25f, -0.1f);
+    glVertex3f( 0.5f,  0.25f, -0.1f);
+    glVertex3f( 0.5f,  0.25f,  0.1f);
     glEnd();
 
     // Blue side - TOP
     glBegin(GL_POLYGON);
     glColor3f(   0.0,  0.0,  1.0 );
-    glVertex3f(  0.5,  0.5,  0.5 );
-    glVertex3f(  0.5,  0.5, -0.5 );
-    glVertex3f( -0.5,  0.5, -0.5 );
-    glVertex3f( -0.5,  0.5,  0.5 );
+    glVertex3f(-0.5f, -0.25f, -0.1f);
+    glVertex3f(-0.5f, -0.25f,  0.1f);
+    glVertex3f(-0.5f,  0.25f,  0.1f);
+    glVertex3f(-0.5f,  0.25f, -0.1f);
     glEnd();
 
     // Red side - BOTTOM
     glBegin(GL_POLYGON);
     glColor3f(   1.0,  0.0,  0.0 );
-    glVertex3f(  0.5, -0.5, -0.5 );
-    glVertex3f(  0.5, -0.5,  0.5 );
-    glVertex3f( -0.5, -0.5,  0.5 );
-    glVertex3f( -0.5, -0.5, -0.5 );
+    glVertex3f(-0.5f,  0.25f,  0.1f);
+    glVertex3f( 0.5f,  0.25f,  0.1f);
+    glVertex3f( 0.5f,  0.25f, -0.1f);
+    glVertex3f(-0.5f,  0.25f, -0.1f);
     glEnd();
 
+    // Red side - BOTTOM
+    glBegin(GL_POLYGON);
+    glColor3f(   1.0,  1.0,  0.0 );
+    glVertex3f(-0.5f, -0.25f, -0.1f);
+    glVertex3f( 0.5f, -0.25f, -0.1f);
+    glVertex3f( 0.5f, -0.25f,  0.1f);
+    glVertex3f(-0.5f, -0.25f,  0.1f);
+    glEnd();
 }
 
 void Visualization::drawCylinder(float radius, float height)

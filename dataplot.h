@@ -18,10 +18,12 @@ class DataPlot : public QWidget
 public:
     explicit DataPlot(QWidget *parent = 0);
     void updateSensorData(const QVector3D &accData, const QVector3D &gyrData, const QVector3D &magData);
+    void updateAngleData(const QVector3D &angleData);
 
     QWidget *createAccPlot();
     QWidget *createGyrPlot();
     QWidget *createMagPlot();
+    QWidget *createAnglePlot();
 
 private:
     QTabWidget *m_tabWidget;
@@ -31,6 +33,7 @@ private:
     QCustomPlot *m_accPlot;
     QCustomPlot *m_gyrPlot;
     QCustomPlot *m_magPlot;
+    QCustomPlot *m_anglePlot;
 
     QTimer *m_timer;
     double m_tickCounter;
@@ -46,6 +49,11 @@ private:
     QVector<double> m_mag_x_Values;
     QVector<double> m_mag_y_Values;
     QVector<double> m_mag_z_Values;
+
+    QVector<double> m_angle_x_Values;
+    QVector<double> m_angle_y_Values;
+    QVector<double> m_angle_z_Values;
+
 
     QVector<double> m_timestamps;
 

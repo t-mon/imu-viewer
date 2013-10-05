@@ -7,6 +7,7 @@ DataPlot::DataPlot(QWidget *parent) :
     m_accPlot = new QCustomPlot(this);
     m_gyrPlot = new QCustomPlot(this);
     m_magPlot = new QCustomPlot(this);
+    m_anglePlot = new QCustomPlot(this);
 
     m_timer = new QTimer(this);
     m_timer->setInterval(20);
@@ -187,18 +188,75 @@ QWidget *DataPlot::createMagPlot()
     return m_magPlot;
 }
 
+QWidget *DataPlot::createAnglePlot()
+{
+    // setup plot
+    m_anglePlot->yAxis->setRange(-180,180);
+
+    // set some pens, brushes and backgrounds:
+    m_anglePlot->xAxis->setBasePen(QPen(Qt::white, 1));
+    m_anglePlot->yAxis->setBasePen(QPen(Qt::white, 1));
+    m_anglePlot->xAxis->setTickPen(QPen(Qt::white, 1));
+    m_anglePlot->yAxis->setTickPen(QPen(Qt::white, 1));
+    m_anglePlot->xAxis->setSubTickPen(QPen(Qt::white, 1));
+    m_anglePlot->yAxis->setSubTickPen(QPen(Qt::white, 1));
+    m_anglePlot->xAxis->setTickLabelColor(Qt::white);
+    m_anglePlot->yAxis->setTickLabelColor(Qt::white);
+    m_anglePlot->xAxis->grid()->setPen(QPen(QColor(140, 140, 140), 1, Qt::DotLine));
+    m_anglePlot->yAxis->grid()->setPen(QPen(QColor(140, 140, 140), 1, Qt::DotLine));
+    m_anglePlot->xAxis->grid()->setSubGridPen(QPen(QColor(80, 80, 80), 1, Qt::DotLine));
+    m_anglePlot->yAxis->grid()->setSubGridPen(QPen(QColor(80, 80, 80), 1, Qt::DotLine));
+    m_anglePlot->xAxis->grid()->setSubGridVisible(true);
+    m_anglePlot->yAxis->grid()->setSubGridVisible(true);
+    m_anglePlot->xAxis->grid()->setZeroLinePen(Qt::NoPen);
+    m_anglePlot->yAxis->grid()->setZeroLinePen(Qt::NoPen);
+    m_anglePlot->xAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
+    m_anglePlot->yAxis->setUpperEnding(QCPLineEnding::esSpikeArrow);
+    QLinearGradient plotGradient;
+    plotGradient.setStart(0, 0);
+    plotGradient.setFinalStop(0, 350);
+    plotGradient.setColorAt(0, QColor(80, 80, 80));
+    plotGradient.setColorAt(1, QColor(50, 50, 50));
+    m_anglePlot->setBackground(plotGradient);
+    QLinearGradient axisRectGradient;
+    axisRectGradient.setStart(0, 0);
+    axisRectGradient.setFinalStop(0, 350);
+    axisRectGradient.setColorAt(0, QColor(80, 80, 80));
+    axisRectGradient.setColorAt(1, QColor(30, 30, 30));
+    m_anglePlot->axisRect()->setBackground(axisRectGradient);
+
+    // create graphs
+    m_anglePlot->addGraph();
+    m_anglePlot->graph(0)->setData(m_angle_x_Values,m_timestamps);
+    m_anglePlot->graph(0)->setPen(QPen(Qt::blue));
+
+    // angle y graph
+    m_anglePlot->addGraph();
+    m_anglePlot->graph(1)->setData(m_angle_y_Values,m_timestamps);
+    m_anglePlot->graph(1)->setPen(QPen(Qt::red));
+
+    // angle z graph
+    m_anglePlot->addGraph();
+    m_anglePlot->graph(2)->setData(m_angle_z_Values,m_timestamps);
+    m_anglePlot->graph(2)->setPen(QPen(Qt::green));
+
+    m_anglePlot->replot();
+    return m_anglePlot;
+}
+
 void DataPlot::timerCounter()
 {
     m_tickCounter+= 0.025;
 
-    m_accPlot->xAxis->setRange(m_tickCounter-10,m_tickCounter +2 );
-    m_gyrPlot->xAxis->setRange(m_tickCounter-10,m_tickCounter +2 );
-    m_magPlot->xAxis->setRange(m_tickCounter-10,m_tickCounter +2 );
+    m_accPlot->xAxis->setRange(m_tickCounter-10,m_tickCounter +2);
+    m_gyrPlot->xAxis->setRange(m_tickCounter-10,m_tickCounter +2);
+    m_magPlot->xAxis->setRange(m_tickCounter-10,m_tickCounter +2);
+    m_anglePlot->xAxis->setRange(m_tickCounter-10,m_tickCounter +2);
 
     m_accPlot->replot();
     m_gyrPlot->replot();
     m_magPlot->replot();
-    
+    m_anglePlot->replot();
 }
 
 void DataPlot::plotting(const bool &enable)
@@ -221,7 +279,6 @@ void DataPlot::updateSensorData(const QVector3D &accData, const QVector3D &gyrDa
     m_acc_x_Values.append(accData.x());
     m_acc_y_Values.append(accData.y());
     m_acc_z_Values.append(accData.z());
-
     m_accPlot->graph(0)->setData(m_timestamps,m_acc_x_Values);
     m_accPlot->graph(1)->setData(m_timestamps,m_acc_y_Values);
     m_accPlot->graph(2)->setData(m_timestamps,m_acc_z_Values);
@@ -230,9 +287,6 @@ void DataPlot::updateSensorData(const QVector3D &accData, const QVector3D &gyrDa
     m_gyr_x_Values.append(gyrData.x());
     m_gyr_y_Values.append(gyrData.y());
     m_gyr_z_Values.append(gyrData.z());
-
-    //qDebug() << m_gyr_z_Values.last() << m_gyr_z_Values.count();
-
     m_gyrPlot->graph(0)->setData(m_timestamps,m_gyr_x_Values);
     m_gyrPlot->graph(1)->setData(m_timestamps,m_gyr_y_Values);
     m_gyrPlot->graph(2)->setData(m_timestamps,m_gyr_z_Values);
@@ -241,11 +295,9 @@ void DataPlot::updateSensorData(const QVector3D &accData, const QVector3D &gyrDa
     m_mag_x_Values.append(magData.x());
     m_mag_y_Values.append(magData.y());
     m_mag_z_Values.append(magData.z());
-
     m_magPlot->graph(0)->setData(m_timestamps,m_mag_x_Values);
     m_magPlot->graph(1)->setData(m_timestamps,m_mag_y_Values);
     m_magPlot->graph(2)->setData(m_timestamps,m_mag_z_Values);
-
 
     // change vector leght
     if(m_timestamps.count() > dataLength){
@@ -282,6 +334,32 @@ void DataPlot::updateSensorData(const QVector3D &accData, const QVector3D &gyrDa
     }
     if(m_mag_z_Values.count() > dataLength){
         m_mag_z_Values.remove(0);
+    }
+
+
+}
+
+void DataPlot::updateAngleData(const QVector3D &angleData)
+{
+
+    int dataLength = 500;
+
+    // angle
+    m_angle_x_Values.append(angleData.x());
+    m_angle_y_Values.append(angleData.y());
+    m_angle_z_Values.append(angleData.z());
+    m_anglePlot->graph(0)->setData(m_timestamps,m_angle_x_Values);
+    m_anglePlot->graph(1)->setData(m_timestamps,m_angle_y_Values);
+    m_anglePlot->graph(2)->setData(m_timestamps,m_angle_z_Values);
+
+    if(m_angle_x_Values.count() > dataLength){
+        m_angle_x_Values.remove(0);
+    }
+    if(m_angle_y_Values.count() > dataLength){
+        m_angle_y_Values.remove(0);
+    }
+    if(m_angle_z_Values.count() > dataLength){
+        m_angle_z_Values.remove(0);
     }
 
 }
