@@ -19,7 +19,7 @@ DataPlot::DataPlot(QWidget *parent) :
 QWidget *DataPlot::createAccPlot()
 {
     // setup plot
-    m_accPlot->yAxis->setRange(-1,1);
+    m_accPlot->yAxis->setRange(-256,256);
     m_accPlot->xAxis->setTickLength(1);
 
     // set some pens, brushes and backgrounds:
@@ -135,7 +135,7 @@ QWidget *DataPlot::createGyrPlot()
 QWidget *DataPlot::createMagPlot()
 {
     // setup plot
-    m_magPlot->yAxis->setRange(-1,1);
+    m_magPlot->yAxis->setRange(-600,600);
 
     // set some pens, brushes and backgrounds:
     m_magPlot->xAxis->setBasePen(QPen(Qt::white, 1));

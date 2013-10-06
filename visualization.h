@@ -25,7 +25,9 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
     void drawObject();
+    void drawKoordinateSystem();
     void drawCylinder(float radius, float height);
+
 
 signals:
 
