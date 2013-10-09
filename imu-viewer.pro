@@ -17,11 +17,13 @@ SOURCES += main.cpp\
     core.cpp \
     visualization.cpp \
     qcustomplot.cpp \
-    dataplot.cpp
+    dataplot.cpp \
+    compass.cpp
 
 HEADERS  += mainwindow.h \
     tcpclient.h \
     core.h \
     visualization.h \
     qcustomplot.h \
-    dataplot.h
+    dataplot.h \
+    compass.h

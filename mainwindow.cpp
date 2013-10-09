@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     centralWidget->setLayout(mainGridLayout);
 
     m_visualization = new Visualization(this);
+    m_compass = new Compass(this);
 
     mainGridLayout->addWidget(createConnectionGroupbox(),0,0,1,2);
     mainGridLayout->addWidget(createVisualizazionGroupbox(),1,0,4,1);
@@ -184,6 +185,7 @@ QGroupBox *MainWindow::createVisualizazionGroupbox()
     m_dataPlot = new DataPlot(groupBox);
 
     tabWidget->addTab(m_visualization,"  3D  ");
+    tabWidget->addTab(m_compass, "Compass");
     tabWidget->addTab(m_dataPlot->createAnglePlot(),"Angles");
     tabWidget->addTab(m_dataPlot->createAccPlot()," Acc  ");
     tabWidget->addTab(m_dataPlot->createGyrPlot()," Gyr  ");
@@ -238,5 +240,6 @@ void MainWindow::updateAngleData(const float &roll, const float &pitch, const fl
 
     m_visualization->updateAngles(roll+180,pitch+180,yaw+180);
     m_dataPlot->updateAngleData(QVector3D(roll,pitch,yaw));
+    m_compass->updateAngle(yaw+180);
 
 }

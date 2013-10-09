@@ -39,10 +39,10 @@ void Visualization::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    glTranslatef(0.0,0.0,-3);
-    glRotatef(xRot, 1.0, 0.0, 0.0);
-    glRotatef(yRot, 0.0, 1.0, 0.0);
-    glRotatef(zRot, 0.0, 0.0, 1.0);
+    glTranslatef(0.0,0.0,-2.5);
+    glRotatef(xRot + 90 , 1.0, 0.0, 0.0); // +90 to see in the right position
+    glRotatef(yRot      , 0.0, 1.0, 0.0);
+    glRotatef(zRot +180 , 0.0, 0.0, 1.0);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -76,8 +76,8 @@ void Visualization::drawObject()
 {
 
 
+    //glRotatef(90,14,0,0);
     glColor4f(1.0,0.0,1.0,0.5);
-    glRotatef(90,14,0,0);
     glBegin(GL_QUADS);
     glVertex3f(-0.5f, -0.25f,  0.1f);
     glVertex3f( 0.5f, -0.25f,  0.1f);
@@ -198,8 +198,8 @@ void Visualization::drawCylinder(float radius, float height)
 void Visualization::updateAngles(const float &roll, const float &pitch, const float &yaw)
 {
 
-    xRot = (int)roll;
-    yRot = (int)yaw;
-    zRot = (int)pitch;
+    xRot = (int)pitch;
+    yRot = (int)roll;
+    zRot = (int)yaw * (-1);
     updateGL();
 }

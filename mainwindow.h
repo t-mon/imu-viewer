@@ -12,6 +12,7 @@
 #include <visualization.h>
 #include <qcustomplot.h>
 #include <dataplot.h>
+#include <compass.h>
 
 namespace Ui {
 class MainWindow;
@@ -56,6 +57,7 @@ private:
 
     DataPlot *m_dataPlot;
     Visualization *m_visualization;
+    Compass *m_compass;
 
 signals:
     void connectServer(const QString &ipAddress, const QString &port);
