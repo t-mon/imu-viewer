@@ -1,3 +1,22 @@
+/*
+ *    This application is visualizes data from imu-utils over tcp
+ *
+ *    Copyright (C) 2013 Simon Stürz (stuerz.simon@gmail.com)
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 #include "compass.h"
 #include <QPainter>
 #include <QColor>
@@ -18,8 +37,6 @@ void Compass::paintEvent(QPaintEvent *event)
     p.setPen(Qt::black);
     p.setBrush(Qt::black);
     p.drawRect(0,0,width(),height());
-
-
 
     // ---------------------needle--------------------------
     // triangle north left
@@ -101,6 +118,7 @@ void Compass::paintEvent(QPaintEvent *event)
 
     painter.setPen(pen);
     painter.drawText(-5,-52,"N");
+    painter.drawText(-80,-50,QString::number(((int)m_angle-360)*(-1))+"°");
 
     for(int i = 0; i < 360; ++i) {
         painter.drawLine(50, 0, 48, 0);
@@ -117,7 +135,6 @@ void Compass::paintEvent(QPaintEvent *event)
         painter.drawLine(50, 0, 43, 0);
         painter.rotate(45.0);
     }
-
     pen.setWidth(1);
     painter.setPen(pen);
     painter.drawEllipse(QPoint(0,0),50,50);
