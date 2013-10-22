@@ -22,7 +22,6 @@
 
 #include <QObject>
 #include <QGLWidget>
-#include <qgl.h>
 
 class Visualization : public QGLWidget
 {
@@ -39,14 +38,10 @@ protected:
     void initializeGL();
     void resizeGL(int width, int height);
     void paintGL();
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void wheelEvent(QWheelEvent *event);
 
     void drawObject();
+    void drawWiredQuader(float height, float lenght, float width);
     void drawKoordinateSystem();
-    void drawCylinder(float radius, float height);
-
 
 signals:
 

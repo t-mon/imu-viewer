@@ -20,12 +20,7 @@
 #include <QtGui>
 #include <QtOpenGL>
 #include <QGLWidget>
-#include <qgl.h>
-#include <QMatrix4x4>
-#include <QVector3D>
-#include <qmath.h>
 #include <GL/glut.h>
-#include <GL/gl.h>
 
 
 #include "visualization.h"
@@ -40,7 +35,6 @@ void Visualization::initializeGL()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    //gluLookAt(0,0,-10,0,0,0,0,0,0);
 }
 
 void Visualization::resizeGL(int width, int height)
@@ -58,45 +52,27 @@ void Visualization::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
+    //Set blending function.
+    //glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+
     glTranslatef(0.0,0.0,-2.5);
     glRotatef(xRot + 90 , 1.0, 0.0, 0.0); // +90 to see in the right position
     glRotatef(yRot      , 0.0, 1.0, 0.0);
     glRotatef(zRot +180 , 0.0, 0.0, 1.0);
 
     glEnable(GL_DEPTH_TEST);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
-
+    //glEnable(GL_BLEND);
     drawObject();
-
+    drawWiredQuader(0.2,1,0.5);
     glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_BLEND);
     drawKoordinateSystem();
-    glEnable(GL_DEPTH_TEST);
-
-}
-
-void Visualization::mousePressEvent(QMouseEvent *event)
-{
-
-}
-
-void Visualization::mouseMoveEvent(QMouseEvent *event)
-{
-
-}
-
-void Visualization::wheelEvent(QWheelEvent *event)
-{
-
 }
 
 void Visualization::drawObject()
 {
-
-
-    //glRotatef(90,14,0,0);
-    glColor4f(1.0,0.0,1.0,0.5);
+    glColor4f(0.5,0.5,0.0,1.0);
+    // z ____________________________________________
     glBegin(GL_QUADS);
     glVertex3f(-0.5f, -0.25f,  0.1f);
     glVertex3f( 0.5f, -0.25f,  0.1f);
@@ -104,7 +80,7 @@ void Visualization::drawObject()
     glVertex3f(-0.5f,  0.25f,  0.1f);
     glEnd();
 
-    glColor4f(1.0,0.0,1.0,0.5);
+    // -z ____________________________________________
     glBegin(GL_QUADS);
     glVertex3f( 0.5f, -0.25f, -0.1f);
     glVertex3f(-0.5f, -0.25f, -0.1f);
@@ -112,7 +88,7 @@ void Visualization::drawObject()
     glVertex3f( 0.5f,  0.25f, -0.1f);
     glEnd();
 
-    glColor4f(0.0,1.0,0.0,0.5);
+    // x ____________________________________________
     glBegin(GL_QUADS);
     glVertex3f( 0.5f, -0.25f,  0.1f);
     glVertex3f( 0.5f, -0.25f, -0.1f);
@@ -120,7 +96,7 @@ void Visualization::drawObject()
     glVertex3f( 0.5f,  0.25f,  0.1f);
     glEnd();
 
-    glColor4f(0.0,0.0,1.0,0.5);
+    // -x ____________________________________________
     glBegin(GL_QUADS);
     glVertex3f(-0.5f, -0.25f, -0.1f);
     glVertex3f(-0.5f, -0.25f,  0.1f);
@@ -128,7 +104,7 @@ void Visualization::drawObject()
     glVertex3f(-0.5f,  0.25f, -0.1f);
     glEnd();
 
-    glColor4f(1.0,0.0,0.0,0.5);
+    // y ____________________________________________
     glBegin(GL_QUADS);
     glVertex3f(-0.5f,  0.25f,  0.1f);
     glVertex3f( 0.5f,  0.25f,  0.1f);
@@ -136,26 +112,72 @@ void Visualization::drawObject()
     glVertex3f(-0.5f,  0.25f, -0.1f);
     glEnd();
 
-    glColor4f(1.0,1.0,0.0,0.5);
+    // -y ____________________________________________
     glBegin(GL_QUADS);
     glVertex3f(-0.5f, -0.25f, -0.1f);
     glVertex3f( 0.5f, -0.25f, -0.1f);
     glVertex3f( 0.5f, -0.25f,  0.1f);
     glVertex3f(-0.5f, -0.25f,  0.1f);
     glEnd();
+}
+
+void Visualization::drawWiredQuader(float height, float lenght, float width)
+{
+    height = height/2;
+    lenght = lenght/2;
+    width  = width/2;
+
+    glDisable(GL_DEPTH_TEST);
+    glColor4f(0.0,1.0,0.0,0.2);
+    glBegin(GL_LINES);
+    glVertex3f(-lenght, -width,  height);
+    glVertex3f( lenght, -width,  height);
+
+    glVertex3f( lenght,  width,  height);
+    glVertex3f(-lenght,  width,  height);
+
+    glVertex3f(-lenght, -width, -height);
+    glVertex3f( lenght, -width, -height);
+
+    glVertex3f( lenght,  width, -height);
+    glVertex3f(-lenght,  width, -height);
+
+    glVertex3f(-lenght, -width,  height);
+    glVertex3f(-lenght, -width, -height);
+
+    glVertex3f( lenght, -width,  height);
+    glVertex3f( lenght, -width, -height);
+
+    glVertex3f(-lenght,  width,  height);
+    glVertex3f(-lenght,  width, -height);
+
+    glVertex3f( lenght,  width,  height);
+    glVertex3f( lenght,  width, -height);
+
+    glVertex3f(-lenght, -width,  height);
+    glVertex3f(-lenght,  width,  height);
+
+    glVertex3f(-lenght, -width, -height);
+    glVertex3f(-lenght,  width, -height);
+
+    glVertex3f( lenght, -width, -height);
+    glVertex3f( lenght,  width, -height);
+
+    glVertex3f( lenght,  width,  height);
+    glVertex3f( lenght, -width,  height);
+    glEnd();
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Visualization::drawKoordinateSystem()
 {
 
     float length = 0.8;
-
     glBegin(GL_LINES);
     // x
     glColor3f(1,0,0);
     glVertex3f(0,0,0);
     glVertex3f(length,0,0);
-
     // y
     glColor3f(1,0,1);
     glVertex3f(0,0,0);
@@ -194,29 +216,10 @@ void Visualization::drawKoordinateSystem()
     glTranslatef(0,0,-length);
     glPopMatrix();
 
-
-}
-
-void Visualization::drawCylinder(float radius, float height)
-{
-    int slices = 32;
-
-    GLUquadricObj *quadratic;
-    quadratic = gluNewQuadric();
-    gluQuadricDrawStyle(quadratic,GL_POINT);
-    gluCylinder(quadratic,radius,radius,height,slices,slices);
-    gluQuadricDrawStyle(quadratic, GL_POINT);
-    gluDisk(quadratic,0,radius,slices,slices);
-    glPushMatrix();
-    glTranslatef(0,0,height);
-    gluQuadricDrawStyle(quadratic, GL_POINT);
-    gluDisk(quadratic,0,radius,slices,slices);
-    glPopMatrix();
 }
 
 void Visualization::updateAngles(const float &roll, const float &pitch, const float &yaw)
 {
-
     xRot = (int)pitch;
     yRot = (int)roll;
     zRot = (int)yaw * (-1);
